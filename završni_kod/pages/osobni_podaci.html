@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Web sustav za praćenje terapije</title>
+  <link rel="stylesheet" href="../styles/osobni_podaci.css">
+</head>
+<body>
+
+
+  <div class="container">
+    <form id="anketaForm">
+      <label class="container-label" for="patient">Osobni podaci</label>
+      <div class="form-group">
+        <label for="name">Ime</label>
+        <input type="text" class="form-control" id="name" required>
+      </div>
+      <div class="form-group">
+        <label for="surname">Prezime</label>
+        <input type="text" class="form-control" id="surname" required>
+      </div>
+      <div class="form-group">
+        <label for="birthdate">Datum rođenja</label>
+        <input type="date" class="form-control" id="birthdate" required>
+      </div>
+      <div class="form-group">
+        <label for="sex">Spol</label>
+        <select class="form-control" id="sex" required>
+          <option value="muški">Muški</option>
+          <option value="ženski">Ženski</option>
+        </select>
+      </div>
+
+      <!--NOVO-->
+      <div class="form-group">
+        <label for="disease">Dijagnosticirana bolest</label>
+        <select class="form-control" id="disease" required>
+          <option value="Hipertireoza">Hipertireoza</option>
+          <option value="Gravesova bolest">Gravesova bolest</option>
+          <option value="Hipotireoza">Hipotireoza</option>
+          <option value="Guša">Guša</option>
+          <option value="Čvorovi na štitnjači">Čvorovi na štitnjači</option>
+          <option value="Rak štitnjače">Rak štitnjače</option>
+          <option value="Nema bolesti">Nema bolesti</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="role">Uloga</label>
+        <select class="form-control" id="role" required>
+          <option value="pacijent">Pacijent</option>
+          <option value="liječnik">Liječnik</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Unesi</button>
+    </form>
+  </div>
+
+</div>
+<br>
+
+<br>
+
+
+</body>
+
+<script type="module">
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+  import { getFirestore, collection, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+      apiKey: "AIzaSyDZ6rpmbNpgFwwLonDAXjgjozWoIbMkYAg",
+      authDomain: "authentication-cabc7.firebaseapp.com",
+      databaseURL: "https://authentication-cabc7-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "authentication-cabc7",
+      storageBucket: "authentication-cabc7.appspot.com",
+      messagingSenderId: "598462458994",
+      appId: "1:598462458994:web:d75e9a8fbf93071f3126eb"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const urlParams = new URLSearchParams(window.location.search);
+  const userId = urlParams.get('userId');
+  console.log("userId:", userId);
+  const db = getFirestore(app);
+
+
+  document.getElementById("anketaForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const birthdate = document.getElementById("birthdate").value;
+    const sex = document.getElementById("sex").value;
+    const name = document.getElementById("name").value;
+    const surname = document.getElementById("surname").value;
+    const role = document.getElementById("role").value;
+    const disease = document.getElementById("disease").value;
+
+    try {
+      let collectionName = "";
+      if (role === "pacijent") {
+        collectionName = "patients";
+      } else if (role === "liječnik") {
+        collectionName = "doctors";
+      }
+
+      const userDocRef = doc(db, collectionName, userId);
+      await setDoc(userDocRef, {
+        birthdate: birthdate,
+        sex: sex,
+        name: name,
+        surname: surname,
+        disease: disease,
+        role: role
+      });
+
+      if (role === "pacijent") {
+        window.location.href = "zdravstveni_karton.html?userId=" + userId + "&pat=1";
+      } else if (role === "liječnik") {
+        window.location.href = "pregled_pacijenata.html?" + "doc=1";
+      }
+      
+    } catch (error) {
+      console.error("Error storing form values:", error);
+    }
+  });
+
+
+  
+</script>
+
+</html>

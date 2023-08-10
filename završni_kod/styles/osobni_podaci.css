@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container{
+    position: relative;
+    width:500px;
+    height:650px;
+    background: transparent;
+    border: 2px solid rgba(255,255,255,.5);
+    border-radius:20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 30px rgba(0,0,0,.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.container-label{
+    font-size: 2em;
+    margin-left: 50px;
+    color:#162938;
+}
+
+.container .form{
+    height: 520px;
+    width: 100%;
+    padding:40px;
+}
+
+.form-group{
+    position: relative;
+    width: 100%;
+    height: 50px;
+    border-bottom: 2px solid #162938;
+    margin: 30px 0;
+}
+
+.form-group label{
+    position: absolute;
+    top:-30%;
+    left: 5px;
+    font-size: 1em;
+    color:#162938;
+    font-weight: 500;
+    pointer-events: none;
+}
+
+.form-group input{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    color: #162938;
+    font-weight: 600;
+    padding: 0 35px 0 5px;
+}
+
+
+.btn.btn-primary{
+    width:100%;
+    height:45px;
+    background: #162938;
+    border:none;
+    outline: none;
+    border-radius: 6px;
+    cursor:pointer;
+    font-size: 1em;
+    color:#fff;
+    font-weight: 500;
+}
+
+.btn.btn-primary:hover{
+    opacity: 80%;
+    transition:  .40s;
+}
+
+.form-group select{
+    position: absolute;
+    top:30%;
+    left: 2%;
+    border:none;
+    outline: none;
+    background: transparent;
+    font-size: 1em;
+    color: #162938;
+    font-weight: 600;
+}
+
+
+@media (max-width: 768px) {
+     
+     .container {
+        border: none;
+        backdrop-filter: none;
+        box-shadow: none;
+        border-radius: none;
+     }
+ 
+}

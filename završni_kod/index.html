@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Web sustav za praćenje terapije</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <form name="registration_form" id="registration_form" method="post" action="#" >
+      <div class="row">
+          <div class="col-sm-4">
+              <h2>Registracija</h2>
+              <div class="form-group">
+                  <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                  <input type="text" name="email" id="email" class="form-control">
+                  <label for="email">Unesite email</label>
+              </div>
+
+              <div class="form-group">
+                  <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                  <input type="password" name="password" id="password" class="form-control">
+                  <label for="password">Unesite lozinku</label>
+              </div>
+              <button type="button" id="register" name="register" class="btn btn-success" >Registracija</button>
+              <div class="login-register">
+                <p>
+                    <a href="#" class="login-link">Već imate korisnički račun?</a>
+                </p>
+            </div> 
+
+          </div>
+      </div>
+  </form>
+
+  <form name="login_form" id="login_form" method="post" action="#" >
+      <div class="row">
+          <div class="col-sm-4">
+              <h2>Prijava</h2>
+              <div class="form-group">
+                  <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                  <input type="text" name="login_email" id="login_email" class="form-control">
+                  <label for="email">Unesite email</label>
+              </div>
+
+              <div class="form-group">
+                  <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                  <input type="password" name="login_password" id="login_password" class="form-control">
+                  <label for="password">Unesite lozinku</label>
+              </div>
+              <button type="button" id="login" name="login" class="btn btn-success">Prijava</button>
+              <div class="login-register">
+                <p>
+                    <a href="#" class="register-link">Ne posjedujete korisnički račun?</a>
+                </p>
+            </div>
+          </div>
+      </div>
+  </form>
+</div>
+<br>
+</body>
+
+
+    <script type="module">
+ 
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZ6rpmbNpgFwwLonDAXjgjozWoIbMkYAg",
+            authDomain: "authentication-cabc7.firebaseapp.com",
+            databaseURL: "https://authentication-cabc7-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "authentication-cabc7",
+            storageBucket: "authentication-cabc7.appspot.com",
+            messagingSenderId: "598462458994",
+            appId: "1:598462458994:web:d75e9a8fbf93071f3126eb"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth();
+        console.log(app);
+
+        document.querySelector(".login-link").addEventListener("click", function() {
+            document.querySelector('.container').classList.remove("active");
+            document.querySelector('.container').classList.add("active-popup");
+        });
+
+        document.querySelector(".register-link").addEventListener("click", function() {
+            document.querySelector('.container').classList.add("active");
+        });
+
+
+        document.getElementById("register").addEventListener('click', function() {
+
+          var email = document.getElementById('email').value;
+          var password = document.getElementById('password').value;
+
+          createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log(user);
+                window.location.href = "pages/osobni_podaci.html?userId=" + user.uid;
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorMessage);
+                alert(error);
+            });
+        })
+
+        document.getElementById("login").addEventListener("click", function() {
+          var email =  document.getElementById("login_email").value;
+          var password = document.getElementById("login_password").value;
+
+          signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => { 
+                const user = userCredential.user;
+                
+                const docRef = doc(db, "doctors", user.uid);
+                const patRef = doc(db, "patients", user.uid);
+                getDoc(docRef)
+                    .then((docSnap) => {
+                        const userData = docSnap.data();
+
+                        if (userData !== undefined && userData.role === "liječnik") {
+                            window.location.href = "pages/pregled_pacijenata.html";
+                        } 
+                    })
+                getDoc(patRef)
+                    .then((docSnap) => {
+                        const userData = docSnap.data();
+
+                        if (userData !== undefined && userData.role === "pacijent") {
+                            window.location.href = "pages/zdravstveni_karton.html?userId=" + user.uid + "&pat=1";
+                        } 
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        console.log(errorMessage);
+                        alert(errorMessage);
+                    });
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorMessage);
+                alert(errorMessage);
+            });	
+            
+        })	  		  
+
+    </script>
+
+</html>

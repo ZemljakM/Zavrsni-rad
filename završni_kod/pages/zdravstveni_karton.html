@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+	<title>Web sustav za praćenje terapije</title>
+  <link rel="stylesheet" href="../styles/zdravstveni_karton.css">
+
+</head>
+<body>
+
+    <nav class="navbar">
+        <ul class="nav-links">
+    
+          <input type="checkbox" id="checkbox_toggle" />
+          <label for="checkbox_toggle" class="hamburger">&#9776;</label>
+    
+          <div class="menu">
+            <li><button type="docHome" id="docHome">Pregled pacijenata</button></li>
+            <li><button type="home" id="home">Zdravstveni karton</button></li>
+            <li><button type="checker" id="checker">Ispitivanje simptoma</button></li>
+          </div>
+        </ul>
+
+        <button class="btnLogout">Odjava</button>
+      </nav>
+
+      <div class="left-column">
+        <div class="history">
+          <label for="graph">Povijest rezultata ispitivanje simptoma</label>
+          <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+          <p id="nullHistory"></p>
+        </div>
+
+        <div class="recommendation" id="recommendation">
+          <label for="recommendation">Preporuka:</label>
+          <p id="loadRec"></p>
+        </div>
+
+        <!--NOVO-->
+        <div id="symptomsTableContainer">
+          <table id="symptomsTable">
+            <tr>
+              <th>Simptom</th>
+              <th>Zadnja vrijednost</th>
+            </tr>
+          </table>
+        </div>
+
+        
+        <div id="bloodtestsTableContainer">
+          <table id="bloodtestsTable">
+            <tr>
+              <th>Datum</th>
+              <th>TSH (mIU/mL)</th>
+              <th>FT4 (pmol/L)</th>
+              <th>FT3 (pmol/L)</th>
+            </tr>
+          </table>
+        </div>
+
+
+        <div class="add-data" id="editResults" style="display: none;">
+          <label class="container-label" for="addData">Unos izmjerenih vrijednosti hormona</label>
+          <form id="addDataForm">
+              <div class="form-group">
+                  <label for="newDate">Datum</label>
+                  <input type="date" class="form-control" id="newDate" required>
+              </div>
+              <div class="form-group">
+                  <label for="newTSH">TSH (mIU/mL)</label>
+                  <input type="number" class="form-control" id="newTSH" step="0.01" value="0.00" required>
+              </div>
+              <div class="form-group">
+                  <label for="newFT4">FT4 (pmol/L)</label>
+                  <input type="number" class="form-control" id="newFT4" step="0.01" value="0.00" required>
+              </div>
+              <div class="form-group">
+                  <label for="newFT3">FT3 (pmol/L)</label>
+                  <input type="number" class="form-control" id="newFT3" step="0.01" value="0.00" required>
+              </div>
+              <button type="button" id="saveData">Spremi</button>
+          </form>
+        </div>
+
+
+        
+      </div>
+        
+
+      <div class="right-column">
+        <div class="container">
+          <label class="container-label" for="patient">Osobni podaci</label>
+          <form id="anketaForm">
+            <div class="form-group">
+              <label for="name">Ime</label>
+              <input type="text" class="form-control" id="name" required>
+            </div>
+            <div class="form-group">
+              <label for="surname">Prezime</label>
+              <input type="text" class="form-control" id="surname" required>
+            </div>
+            <div class="form-group">
+              <label for="birthdate">Datum rođenja</label>
+              <input type="text" class="form-control" id="birthdate" required>
+            </div>
+            <div class="form-group">
+              <label for="sex">Spol</label>
+              <input type="text" class="form-control" id="sex" required>
+            </div>
+
+
+            <!--NOVO-->
+            <div class="form-group" id="diseaseGroup">
+              <label for="disease">Dijagnosticirana bolest</label>
+              <input type="text" class="form-control" id="disease" required readonly>
+            </div>
+            
+            <div class="form-group" id="editDiseaseGroup" style="display: none;">
+              <label for="editDisease">Dijagnosticirana bolest</label>
+              <select class="form-control" id="editDisease" required>
+                <option value="Hipertireoza">Hipertireoza</option>
+                <option value="Gravesova bolest">Gravesova bolest</option>
+                <option value="Hipotireoza">Hipotireoza</option>
+                <option value="Guša">Guša</option>
+                <option value="Čvorovi na štitnjači">Čvorovi na štitnjači</option>
+                <option value="Rak štitnjače">Rak štitnjače</option>
+                <option value="Nema bolesti">Nema bolesti</option>
+              </select>
+              <button type="button" id="saveDisease">Spremi</button>
+            </div>
+
+            <div class="form-group">
+              <label for="role">Uloga</label>
+              <input type="text" class="form-control" id="role" required>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      
+
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script type="module">
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDZ6rpmbNpgFwwLonDAXjgjozWoIbMkYAg",
+      authDomain: "authentication-cabc7.firebaseapp.com",
+      databaseURL: "https://authentication-cabc7-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "authentication-cabc7",
+      storageBucket: "authentication-cabc7.appspot.com",
+      messagingSenderId: "598462458994",
+      appId: "1:598462458994:web:d75e9a8fbf93071f3126eb"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('userId');
+    const docParam = urlParams.get('doc');
+    const patParam = urlParams.get('pat');
+
+    function percent(array){
+      return array*100;
+    }
+
+    document.addEventListener("DOMContentLoaded", async function() {
+      const docRef = doc(db, "patients", userId);
+      const docSnap = await getDoc(docRef);
+      const data = docSnap.data();
+
+        document.getElementById("birthdate").value = data.birthdate;
+        document.getElementById("sex").value = data.sex;
+        document.getElementById("name").value = data.name;
+        document.getElementById("surname").value = data.surname;
+        document.getElementById("role").value = data.role;
+        document.getElementById("disease").value = data.disease;
+
+        if (docParam === "1" && patParam === null) {
+          document.getElementById("checker").style.display = "none";
+        } else if (patParam === "1" && docParam === null) {
+          document.getElementById("docHome").style.display = "none";
+        }
+
+
+        //ZA UNOS DIJAGNOSTICIRANE BOLESTI
+        if (docParam === "1" && patParam === null) {
+          document.getElementById("editDiseaseGroup").style.display = "block";
+          const diseaseSelect = document.getElementById("editDisease");
+          const existingDisease = data.disease;
+          const option = document.createElement("option");
+          option.value = existingDisease;
+          option.text = existingDisease;
+          option.selected = true;
+          diseaseSelect.appendChild(option);
+
+          document.getElementById("saveDisease").addEventListener("click", async function () {
+            const selectedDisease = diseaseSelect.value;
+            try {
+              const docRef = doc(db, "patients", userId);
+              await updateDoc(docRef, {
+                disease: selectedDisease
+              });
+
+            } catch (error) {
+              console.error("Error updating disease: ", error);
+            }
+          });
+        } else if (patParam === "1" && docParam === null) {
+          document.getElementById("diseaseGroup").style.display = "block";
+          document.getElementById("disease").value = data.disease;
+        }
+
+
+        //ZA PRIKAZ PREPORUKA
+        if(data.recommendation === null || data.recommendation === undefined) {
+          document.getElementById("loadRec").textContent = "Nema kreirane preporuke.";
+        } else {
+          document.getElementById("loadRec").textContent = data.recommendation;
+        }
+
+
+        //ZA PRIKAZ ZADNJE UNESENIH SIMPTOMA
+        const symptomsTable = document.getElementById("symptomsTable");
+
+        if (data.symptoms === null || data.symptoms === undefined) {
+          const row = symptomsTable.insertRow();
+          const symptomCell = row.insertCell(0);
+          const valueCell = row.insertCell(1);
+          symptomCell.textContent = "Nema podataka o simptomima.";
+          valueCell.textContent = "-";
+        } else {
+          const symptomsData = data.symptoms;
+
+          const symptomOrder = ["Nervoza", "Umor", "Otkucaji srca u stanju mirovanja", "Pojačano znojenje", 
+                                "Problemi sa spavanjem", "Zimogroznost", "Slaba kosa i nokti", 
+                                "Slabost mišića", "Tjelesna težina", "Povećan apetit", "Stolica",
+                                "Izbuljene oči", "Gušavost", "Neredovite menstruacije",
+                                "Problemi s pamćenjem", "Oticanje u vratu", "Otežano disanje ili gutanje",
+                                "Kašalj", "Promukli glas", "Pojava kvržica na vratu"];
+
+          symptomOrder.forEach((symptom) => {
+            const row = symptomsTable.insertRow();
+            const symptomCell = row.insertCell(0);
+            const valueCell = row.insertCell(1);
+
+            symptomCell.textContent = symptom;
+
+            if (symptomsData.hasOwnProperty(symptom)) {
+              valueCell.textContent = symptomsData[symptom];
+            } else {
+              valueCell.textContent = "-";
+            }
+          });
+        }
+        
+
+        //ZA PRAĆENJE UNESENIH RAZINA SIMPTOMA
+        const bloodtestsTable = document.getElementById("bloodtestsTable");
+
+        if (data.bloodtests === null || data.bloodtests === undefined) {
+          const row = bloodtestsTable.insertRow();
+          const dateCell = row.insertCell(0);
+          const tshCell = row.insertCell(1);
+          const ft4Cell = row.insertCell(2);
+          const ft3Cell = row.insertCell(3);
+          dateCell.textContent = "Nema podataka o hormonima.";
+          tshCell.textContent = "-";
+          ft4Cell.textContent = "-";
+          ft3Cell.textContent = "-";
+        } else {
+          const bloodtests = data.bloodtests;
+
+          const bloodtestsArray = Object.keys(bloodtests).map(date => ({
+            date: date,
+            data: bloodtests[date]
+          }));
+
+          bloodtestsArray.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+          bloodtestsArray.forEach(bloodtest => {
+            const row = bloodtestsTable.insertRow();
+            const dateCell = row.insertCell(0);
+            const tshCell = row.insertCell(1);
+            const ft4Cell = row.insertCell(2);
+            const ft3Cell = row.insertCell(3);
+
+            dateCell.textContent = bloodtest.date;
+            tshCell.textContent = bloodtest.data.TSH || "-";
+            ft4Cell.textContent = bloodtest.data.FT4 || "-";
+            ft3Cell.textContent = bloodtest.data.FT3 || "-";
+          });
+        }
+
+
+        //ZA PRAĆENJE POSTOTAKA SIMPTOMA
+        if (data.percentages === null || data.percentages === undefined) {
+          document.getElementById("nullHistory").textContent = "Nema provedenih ispitivanja.";
+        } else {
+        const sorted = Object.keys(data.percentages).sort().reduce((obj,key) => { obj[key] = data.percentages[key]; return obj;}, {});
+        const dates = Object.keys(sorted);
+        const values = Object.values(sorted);
+        const percentages = values.map(percent);
+
+        const myChart = new Chart("myChart", {
+            type: "line",
+            data: {
+                labels: dates,
+                datasets: [{
+                    data: percentages,
+                    borderColor: "rgba(22,41,56,1.0)",
+                    pointBackgroundColor: "rgba(22,41,56,1.0)",
+                    pointRadius: 4,
+                    fill: false,
+                    lineTension: 0,
+                }]
+            },
+            options: {
+              legend: {display: false},
+              scales: {
+                xAxes: [{
+                  ticks: {fontColor: "rgba(22,41,56,1.0)",},
+                  gridLines: {color: "rgba(22,41,56,0.5)",}
+                }],
+                yAxes: [{
+                  ticks: { min: 0, max:100, fontColor: "rgba(22,41,56,1.0)",},
+                  gridLines: {color: "rgba(22,41,56,0.5)",}
+                }],
+              },
+            },
+        });
+        }
+    });
+
+
+
+    //ZA UNOS RAZINA HORMONA
+    if (docParam === "1" && patParam === null) {
+          document.getElementById("editResults").style.display = "block";
+    }
+
+    document.getElementById("saveData").addEventListener("click", async function () {
+      const newDate = document.getElementById("newDate").value;
+      const newTSH = parseFloat(document.getElementById("newTSH").value);
+      const newFT4 = parseFloat(document.getElementById("newFT4").value);
+      const newFT3 = parseFloat(document.getElementById("newFT3").value);
+
+      try {
+          const docRef = doc(db, "patients", userId);
+          const docSnap = await getDoc(docRef);
+          const data = docSnap.data();
+
+          const updatedBloodTests = data.bloodtests || {};
+          updatedBloodTests[newDate] = {
+              TSH: newTSH,
+              FT4: newFT4,
+              FT3: newFT3
+          };
+
+          await updateDoc(docRef, {
+              bloodtests: updatedBloodTests
+          });
+
+          //alert("Podaci su uspješno spremljeni.");
+          window.location.reload();
+      } catch (error) {
+          console.error("Error updating data: ", error);
+          alert("Došlo je do pogreške pri spremanju podataka.");
+      }
+    });
+
+
+
+    
+    document.getElementById("checker").addEventListener("click", function() {
+        window.location.href = "ispitivanje_simptoma.html?userId=" + userId;
+    });
+
+    document.getElementById("docHome").addEventListener("click", function() {
+        window.location.href = "pregled_pacijenata.html?doc=1";
+    })
+
+    document.querySelector(".btnLogout").addEventListener("click", function() {
+        const auth = getAuth();
+        signOut(auth).then(() => {
+          window.location.href = "../index.html";
+        }).catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorMessage);
+          alert(errorMessage);
+        });
+    });
+
+</script>
+
+</html>

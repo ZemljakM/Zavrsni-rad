@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+	<title>Web sustav za praćenje terapije</title>
+  <link rel="stylesheet" href="../styles/pregled_pacijenata.css">
+
+</head>
+<body>
+  <nav class="navbar">
+    <ul class="nav-links">
+        <li><button type="home" id="home">Pregled pacijenata</button></li>
+    </ul>
+
+    <button class="btnLogout">Odjava</button>
+  </nav>
+
+  <ol class="patientList" id="patientList"></ol>
+</body>
+
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+  import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDZ6rpmbNpgFwwLonDAXjgjozWoIbMkYAg",
+    authDomain: "authentication-cabc7.firebaseapp.com",
+    databaseURL: "https://authentication-cabc7-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "authentication-cabc7",
+    storageBucket: "authentication-cabc7.appspot.com",
+    messagingSenderId: "598462458994",
+    appId: "1:598462458994:web:d75e9a8fbf93071f3126eb"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  document.addEventListener("DOMContentLoaded", async function() {
+    const patientsRef = collection(db, "patients");
+
+    getDocs(patientsRef)
+      .then((querySnapshot) => {
+        const patientList = document.getElementById("patientList");
+
+        querySnapshot.forEach((doc) => {
+          const patientData = doc.data();
+          const patientItem = document.createElement("li");
+          patientItem.textContent = `${patientData.surname}, ${patientData.name}`;
+
+          patientItem.addEventListener("click", () => {
+            const userId = doc.id;
+            window.location.href = "zdravstveni_karton.html?userId=" + userId + "&doc=1";
+          });
+
+          patientList.appendChild(patientItem);
+        });
+
+        var switching = true;
+        var i, shouldSwitch,b;
+        while (switching) {
+          switching = false;
+          b = patientList.getElementsByTagName("LI");
+          for (i = 0; i < (b.length - 1); i++) {
+            shouldSwitch = false;
+            if (b[i].innerHTML.toLowerCase() > b[i + 1].innerHTML.toLowerCase()) {
+              shouldSwitch = true;
+              break;
+            }
+          }
+          if (shouldSwitch) {
+            b[i].parentNode.insertBefore(b[i + 1], b[i]);
+            switching = true;
+          }
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching patient data:", error);
+      });
+  });
+
+
+  document.querySelector(".btnLogout").addEventListener("click", function() {
+      
+      const auth = getAuth();
+      signOut(auth).then(() => {
+        //alert("Sign-out successful.");
+        window.location.href = "../index.html";
+      }).catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorMessage);
+        alert(errorMessage);
+      });
+  });
+
+</script>
+</html>

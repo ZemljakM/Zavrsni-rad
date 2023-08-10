@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins');
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    padding-top: 70px;
+}
+
+li {
+    list-style: none;
+    padding: 5px;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #162938;
+    color: #fff;
+    z-index: 9999;
+}
+  
+
+.nav-links button {
+    color: #fff;
+    border: none;
+    outline:none;
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+
+.btnLogout{
+    background: #162938;
+    color: #fff;
+    outline: none;
+    border:none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+
+.patientList {
+    list-style: none;
+    padding: 0;
+    counter-reset: patientCounter;
+    margin-top: 70px;
+    margin-left: 70px;
+    padding-right: 20px;
+}
+  
+.patientList li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+    border: 2px solid #162938;
+    padding: 10px;
+    border-radius: 5px;
+    width: 450px;
+    cursor: pointer;
+}
+  
+.patientList li:before {
+    content: counter(patientCounter);
+    counter-increment: patientCounter;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background-color: #162938;
+    color: #fff;
+    border-radius: 50%;
+    margin-right: 20px;
+    font-size: 18px;
+}
+
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 50px;
+    }
+
+    .patientList {
+        margin-top: 50px;
+        margin-left: 10px;
+        width: 100%;
+    }
+
+    .patientList li {
+        width: 100%;
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .patientList li:before {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
+        margin-right: 10px;
+    }
+}
+  
+  

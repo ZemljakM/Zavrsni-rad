@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+	<title>Web sustav za praćenje terapije</title>
+    <link rel="stylesheet" href="../styles/ispitivanje_simptoma.css">
+
+</head>
+<body>
+
+    <nav class="navbar">
+        <ul class="nav-links">
+    
+          <input type="checkbox" id="checkbox_toggle" />
+          <label for="checkbox_toggle" class="hamburger">&#9776;</label>
+    
+          <div class="menu">
+            <li><button type="home" id="home">Zdravstveni karton</button></li>
+            <li><button type="checker" id="checker">Ispitivanje simptoma</button></li>
+          </div>
+        </ul>
+
+        <button class="btnLogout">Odjava</button>
+      </nav>
+
+      <!--NOVO-->
+      <form id="therapyForm">
+        <div class="therapy">
+          <div class="therapy-group">
+            <label for="therapy">Dodijeljena terapija</label>
+            <div class="therapy-radio">
+              <input type="radio" class="form-control" name="therapy" id="therapy1" value="Da" required>
+              <label for="yes">Da</label>
+              <input type="radio" class="form-control" name="therapy" id="therapy2" value="Ne" required>
+              <label for="no">Ne</label>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="container">
+        <form id="anketaForm">
+
+          <div class="form-group">
+            <label for="nervousness">Nervoza</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="nervousness" id="nervousness1" required>
+              <label for="first">Svaki dan</label>
+              <input type="radio" class="form-control" name="nervousness" id="nervousness2" required>
+              <label for="second">Nekoliko dana u tjednu</label>
+              <input type="radio" class="form-control" name="nervousness" id="nervousness3" required>
+              <label for="third">Jednom tjedno</label>
+              <input type="radio" class="form-control" name="nervousness" id="nervousness4" required>
+              <label for="fourth">Nikada</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="fatigue">Umor</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="fatigue" id="fatigue1" required>
+              <label for="first">Svaki dan</label>
+              <input type="radio" class="form-control" name="fatigue" id="fatigue2" required>
+              <label for="second">Nekoliko dana u tjednu</label>
+              <input type="radio" class="form-control" name="fatigue" id="fatigue3" required>
+              <label for="third">Jednom tjedno</label>
+              <input type="radio" class="form-control" name="fatigue" id="fatigue4" required>
+              <label for="fourth">Nikada</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="heartbeat">Otkucaji srca u stanju mirovanja</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="heartbeat" id="heartbeat1" required>
+              <label for="first">Manje od 60</label>
+              <input type="radio" class="form-control" name="heartbeat" id="heartbeat2" required>
+              <label for="second">60 do 100</label>
+              <input type="radio" class="form-control" name="heartbeat" id="heartbeat3" required>
+              <label for="third">Više od 100</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="sweating">Pojačano znojenje</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="sweating" id="sweating1" required>
+              <label for="first">Često</label>
+              <input type="radio" class="form-control" name="sweating" id="sweating2" required>
+              <label for="second">Ponekad</label>
+              <input type="radio" class="form-control" name="sweating" id="sweating3" required>
+              <label for="third">Rijetko</label>
+              <input type="radio" class="form-control" name="sweating" id="sweating4" required>
+              <label for="fourth">Nikad</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="sleeping">Problemi sa spavanjem</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="sleeping" id="sleeping1" required>
+              <label for="first">Svaki dan</label>
+              <input type="radio" class="form-control" name="sleeping" id="sleeping2" required>
+              <label for="second">Nekoliko dana u tjednu</label>
+              <input type="radio" class="form-control" name="sleeping" id="sleeping3" required>
+              <label for="third">Jednom tjedno</label>
+              <input type="radio" class="form-control" name="sleeping" id="sleeping4" required>
+              <label for="fourth">Nikada</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="coldness">Zimogroznost</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="coldness" id="coldness1" required>
+              <label for="first">Često</label>
+              <input type="radio" class="form-control" name="coldness" id="coldness2" required>
+              <label for="second">Ponekad</label>
+              <input type="radio" class="form-control" name="coldness" id="coldness3" required>
+              <label for="third">Rijetko</label>
+              <input type="radio" class="form-control" name="coldness" id="coldness4" required>
+              <label for="fourth">Nikad</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="hair">Slaba kosa i nokti</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="hair" id="hair1" required>
+              <label for="yes">Da</label>
+              <input type="radio" class="form-control" name="hair" id="hair2" required>
+              <label for="no">Ne</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="muscles">Slabost mišića</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="muscles" id="muscles1" required>
+              <label for="first">Često</label>
+              <input type="radio" class="form-control" name="muscles" id="muscles2" required>
+              <label for="second">Ponekad</label>
+              <input type="radio" class="form-control" name="muscles" id="muscles3" required>
+              <label for="third">Rijetko</label>
+              <input type="radio" class="form-control" name="muscles" id="muscles4" required>
+              <label for="fourth">Nikad</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="weight">Tjelesna težina</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="weight" id="weight1" required>
+              <label for="first">Smanjenje</label>
+              <input type="radio" class="form-control" name="weight" id="weight2" required>
+              <label for="second">Bez promjene</label>
+              <input type="radio" class="form-control" name="weight" id="weight3" required>
+              <label for="third">Povećanje</label>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="appetite">Povećan apetit</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="appetite" id="appetite1" required>
+              <label for="first">Svaki dan</label>
+              <input type="radio" class="form-control" name="appetite" id="appetite2" required>
+              <label for="second">Nekoliko dana u tjednu</label>
+              <input type="radio" class="form-control" name="appetite" id="appetite3" required>
+              <label for="third">Jednom tjedno</label>
+              <input type="radio" class="form-control" name="appetite" id="appetite4" required>
+              <label for="fourth">Nikada</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="constipation">Stolica</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="constipation" id="constipation1" required>
+              <label for="first">Neredovita</label>
+              <input type="radio" class="form-control" name="constipation" id="constipation2" required>
+              <label for="second">Redovita</label>
+              <input type="radio" class="form-control" name="constipation" id="constipation3" required>
+              <label for="third">Učestala</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="eyes">Izbuljene oči</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="eyes" id="eyes1" required>
+              <label for="yes">Da</label>
+              <input type="radio" class="form-control" name="eyes" id="eyes2" required>
+              <label for="no">Ne</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="goiter">Gušavost</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="goiter" id="goiter1" required>
+              <label for="yes">Da</label>
+              <input type="radio" class="form-control" name="goiter" id="goiter2" required>
+              <label for="no">Ne</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="menstruation">Neredovite menstruacije</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="menstruation" id="menstruation1" required>
+              <label for="yes">Da</label>
+              <input type="radio" class="form-control" name="menstruation" id="menstruation2" required>
+              <label for="no">Ne</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="memory">Problemi s pamćenjem</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="memory" id="memory1" required>
+              <label for="first">Često</label>
+              <input type="radio" class="form-control" name="memory" id="memory2" required>
+              <label for="second">Ponekad</label>
+              <input type="radio" class="form-control" name="memory" id="memory3" required>
+              <label for="third">Rijetko</label>
+              <input type="radio" class="form-control" name="memory" id="memory4" required>
+              <label for="fourth">Nikad</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="neck">Oticanje u vratu</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="neck" id="neck1" required>
+              <label for="yes">Da</label>
+              <input type="radio" class="form-control" name="neck" id="neck2" required>
+              <label for="no">Ne</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="breathing">Otežano disanje ili gutanje</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="breathing" id="breathing1" required>
+              <label for="yes">Da</label>
+              <input type="radio" class="form-control" name="breathing" id="breathing2" required>
+              <label for="no">Ne</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="cough">Kašalj</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="cough" id="cough1" required>
+              <label for="first">Često</label>
+              <input type="radio" class="form-control" name="cough" id="cough2" required>
+              <label for="second">Ponekad</label>
+              <input type="radio" class="form-control" name="cough" id="cough3" required>
+              <label for="third">Rijetko</label>
+              <input type="radio" class="form-control" name="cough" id="cough4" required>
+              <label for="fourth">Nikad</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="voice">Promukli glas</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="voice" id="voice1" required>
+              <label for="first">Često</label>
+              <input type="radio" class="form-control" name="voice" id="voice2" required>
+              <label for="second">Ponekad</label>
+              <input type="radio" class="form-control" name="voice" id="voice3" required>
+              <label for="third">Rijetko</label>
+              <input type="radio" class="form-control" name="voice" id="voice4" required>
+              <label for="fourth">Nikad</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="lumps">Pojava kvržica na vratu</label>
+            <div class="form-radio">
+              <input type="radio" class="form-control" name="lumps" id="lumps1" required>
+              <label for="yes">Da</label>
+              <input type="radio" class="form-control" name="lumps" id="lumps2" required>
+              <label for="no">Ne</label>
+            </div>
+          </div>
+
+
+          <button type="submit" class="btn btn-primary">Rezultat</button>
+
+        </form>
+      </div>
+
+</body>
+
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"
+    import { getFirestore, collection, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDZ6rpmbNpgFwwLonDAXjgjozWoIbMkYAg",
+      authDomain: "authentication-cabc7.firebaseapp.com",
+      databaseURL: "https://authentication-cabc7-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "authentication-cabc7",
+      storageBucket: "authentication-cabc7.appspot.com",
+      messagingSenderId: "598462458994",
+      appId: "1:598462458994:web:d75e9a8fbf93071f3126eb"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('userId');
+    const formattedDate = getCurrentDate();
+    const docRef = doc(db, "patients", userId);
+    const docSnap = await getDoc(docRef);
+    const userData = docSnap.data();
+
+    const labelToNumberTable = {
+      "Svaki dan": 3,
+      "Nekoliko dana u tjednu": 2,
+      "Jednom tjedno": 1,
+      "Nikada": 0,
+      "Manje od 60": -5,
+      "60 do 100": 0,
+      "Više od 100": 5,
+      "Često": 5,
+      "Ponekad": 4,
+      "Rijetko": 2,
+      "Nikad": 1,
+      "Da": 5,
+      "Ne": 0,
+      "Smanjenje": -5,
+      "Bez promjene": 0,
+      "Povećanje": 5,
+      "Neredovita": -5,
+      "Redovita": 0,
+      "Učestala": 5,
+    };
+
+    const hyperthyroidism = {
+      "Nervoza": 0.1,
+      "Umor": 0.1,
+      "Otkucaji srca u stanju mirovanja": 0.6,
+      "Pojačano znojenje": 0.3,
+      "Problemi sa spavanjem": 0.1,
+      "Slaba kosa i nokti": 0.3,
+      "Slabost mišića": 0.2,
+      "Tjelesna težina": -0.4,
+      "Povećan apetit": 0.1,
+      "Stolica": 0.6,
+    }
+
+    const graves = {
+      "Umor": 0.1,
+      "Otkucaji srca u stanju mirovanja": 0.3,
+      "Pojačano znojenje": 0.2,
+      "Problemi sa spavanjem": 0.1,
+      "Tjelesna težina": -0.1,
+      "Izbuljene oči": 0.7,
+      "Gušavost": 0.7,
+    }
+
+    const hypothyroidism = {
+      "Umor": 0.05,
+      "Otkucaji srca u stanju mirovanja": 0.2,
+      "Zimogroznost": 0.5,
+      "Slabost mišića": 0.4,
+      "Tjelesna težina": 0.6,
+      "Stolica": -0.6,
+      "Neredovite menstruacije": 0.15,
+      "Problemi s pamćenjem": 0.15,
+    }
+
+    const goiter = {
+      "Nervoza": 0.1,
+      "Umor": 0.1,
+      "Otkucaji srca u stanju mirovanja": 0.3,
+      "Zimogroznost": 0.2,
+      "Oticanje u vratu": 0.9,
+      "Otežano disanje ili gutanje": 0.4,
+      "Kašalj": 0.2,
+      "Promukli glas": 0.2,
+    };
+
+    const cancer = {
+      "Oticanje u vratu": 0.6,
+      "Otežano disanje ili gutanje": 0.6,
+      "Promukli glas": 0.3,
+      "Pojava kvržica na vratu": 0.9,
+    };
+
+    function collectSelectedLabels() {
+      const selectedLabels = {};
+
+      const formGroups = document.querySelectorAll(".form-group");
+      formGroups.forEach((group) => {
+        const selectedInput = group.querySelector(".form-radio input:checked");
+        if (selectedInput) {
+          const selectedValue = selectedInput.nextElementSibling.textContent;
+          const label = group.querySelector("label").textContent;
+          const labelValue = labelToNumberTable[selectedValue];
+          if (labelValue !== undefined) {
+            selectedLabels[label] = labelValue;
+          }
+        }
+      });
+
+      return selectedLabels;
+    }
+
+    function collectValues() {
+      const selectedValues = {};
+
+      const formGroups = document.querySelectorAll(".form-group");
+      formGroups.forEach((group) => {
+        const selectedInput = group.querySelector(".form-radio input:checked");
+        if (selectedInput) {
+          const selectedValue = selectedInput.nextElementSibling.textContent;
+          const label = group.querySelector("label").textContent;
+          if (selectedValue !== undefined) {
+            selectedValues[label] = selectedValue;
+          }
+        }
+      });
+
+      return selectedValues;
+
+    }
+
+    function calculatePercent(selectedLabels) {
+      const percentages = {};
+      let sum_hyper = -4;
+      let sum_grav = -4.3;
+      let sum_hypo = -6;
+      let sum_goi = -3;
+      let sum_can = -5;
+
+      for (const symptom in hyperthyroidism){
+        const weight = hyperthyroidism[symptom];
+        const value = selectedLabels[symptom];
+        sum_hyper += weight*value;
+      }
+
+      for (const symptom in graves){
+        const weight = graves[symptom];
+        const value = selectedLabels[symptom];
+        sum_grav += weight*value;
+      }
+
+      for (const symptom in hypothyroidism){
+        const weight = hypothyroidism[symptom];
+        const value = selectedLabels[symptom];
+        sum_hypo += weight*value;
+      }
+
+      for (const symptom in goiter){
+        const weight = goiter[symptom];
+        const value = selectedLabels[symptom];
+        sum_goi += weight*value;
+      }
+
+      for (const symptom in cancer){
+        const weight = cancer[symptom];
+        const value = selectedLabels[symptom];
+        sum_can += weight*value;
+      }
+
+    
+      percentages["hyperthyroidism"] = parseFloat((1 /(1 + Math.exp(-sum_hyper))).toFixed(4));
+      percentages["graves"] = parseFloat((1 /(1 + Math.exp(-sum_grav))).toFixed(4));
+      percentages["hypothyroidism"] = parseFloat((1 /(1 + Math.exp(-sum_hypo))).toFixed(4));
+      percentages["goiter"] = parseFloat((1 /(1 + Math.exp(-sum_goi))).toFixed(4));
+      percentages["cancer"] = parseFloat((1 /(1 + Math.exp(-sum_can))).toFixed(4));
+      
+      return percentages;
+    }
+
+    function getCurrentDate() {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    document.getElementById("anketaForm").addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const selectedLabels = collectSelectedLabels();
+      const percentages = calculatePercent(selectedLabels);
+      const selectedValues = collectValues();
+
+      const form = document.getElementById("therapyForm");
+      const formData = new FormData(form);
+      const selectedOption = formData.get("therapy");
+     
+      let maxPercentage = 0;
+      for (const condition in percentages) {
+        const percentage = percentages[condition];
+        if (percentage > maxPercentage) {
+          maxPercentage = percentage;
+        }
+      }
+
+
+      try {
+        if (!userData.symptoms) {
+          userData.symptoms = {};
+        }
+        await updateDoc(docRef, {symptoms: selectedValues})
+
+        if (!userData.percentages) {
+          userData.percentages = {};
+        }
+
+        const sorted = Object.keys(userData.percentages).sort().reduce((obj,key) => { obj[key] = userData.percentages[key]; return obj;}, {});
+        const prevPercentage = sorted[Object.keys(sorted)[Object.keys(sorted).length-1]];
+
+        let prevTest = null; 
+
+        if (userData.bloodtests && typeof userData.bloodtests === "object") {
+          const sortedTests = Object.keys(userData.bloodtests).sort().reduce((obj, key) => { obj[key] = userData.bloodtests[key];return obj;}, {});
+          prevTest = sortedTests[Object.keys(sortedTests)[Object.keys(sortedTests).length - 1]];
+        }
+
+
+
+        
+
+
+        userData.percentages[formattedDate] = maxPercentage;
+        await updateDoc(docRef, {percentages: userData.percentages})
+
+        const percentageChange = (maxPercentage - prevPercentage) * 100;
+
+        let recommendation = "";
+
+        if (prevPercentage === undefined ) {
+          if (maxPercentage>=70) {
+            recommendation += "Prema simptomima postoji velika vjerojatnost da bolujete od neke bolesti štitnjače. ";
+            recommendation += "Javite se liječniku u što kraćem roku. ";
+          } else if(maxPercentage>=35) {
+            recommendation += "Simptomi ukazuju na moguće oboljenje, pratite simptome te ako primjetite pogoršanje javite se liječniku. ";
+          } else {
+            recommendation += "Simptomi ne ukazuju na probleme s radom štitnjače. ";
+            recommendation += "Ako primjetite pojavu novih simptoma ili pogoršanje postojećih, javite se liječniku. ";
+          }
+
+        } else {
+          if (percentageChange >= 10) {
+            recommendation += "Vaše se stanje prema simptomima pogoršalo. ";
+
+            if (selectedOption === "Da") {
+              recommendation += "Terapija ne djeluje, javite se liječniku zbog korekcije terapije. ";
+            } else {
+              recommendation += "Javite se liječniku kako bi se utvrdilo objektivno stanje vašeg zdravlja. ";
+            }
+          } else if (percentageChange <= -10) {
+            recommendation += "Vaše se stanje prema simptomima poboljšalo. ";
+
+            if (selectedOption === "Da") {
+              recommendation += "Terapija djeluje kako treba. ";
+            }
+
+          } else {
+            recommendation += "Nema značajnijih promjena u simptomima. ";
+          }
+        }
+
+        if (prevTest == null) {
+          recommendation += "Nema podataka o mjerenju hormona u krvi. ";
+        } else {
+          if (prevTest["TSH"] >= 0.35 && prevTest["TSH"] <= 4.5) {
+            recommendation += "Hormoni su u granicama normale. ";
+          } else {
+            if ((prevTest["FT4"] >= 12 && prevTest["FT4"] <= 22) && (prevTest["FT3"] >= 3.10 && prevTest["FT3"] <= 6.3)) {
+              recommendation += "Razine hormona upućuju na mogući rizik od oboljevanja. ";
+            } else {
+              recommendation += "Razine hormona su izvan granice normale te upućuju na bolest štitnjače. ";
+            }
+          }
+        }
+
+        
+
+        if(!userData.recommendation) {
+          userData.recommendation = "";
+        }
+        userData.recommendation = recommendation;
+        await updateDoc(docRef, {recommendation: userData.recommendation})
+        window.location.href = "zdravstveni_karton.html?userId=" + userId + "&pat=1";
+
+
+      } catch (error) {
+        console.error("Error saving percentages:", error);
+      }
+    });
+
+    document.getElementById("home").addEventListener("click", function() {
+        window.location.href = "zdravstveni_karton.html?userId=" + userId + "&pat=1";
+    });
+
+    document.querySelector(".btnLogout").addEventListener("click", function() {
+        
+        const auth = getAuth();
+        signOut(auth).then(() => {
+          window.location.href = "../index.html";
+        }).catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorMessage);
+          alert(errorMessage);
+        });
+    });
+
+</script>
+
+</html>

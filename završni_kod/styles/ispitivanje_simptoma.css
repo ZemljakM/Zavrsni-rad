@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins');
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    padding-top: 70px;
+}
+
+li {
+    list-style: none;
+}
+
+.navbar {
+    position: fixed; /* Set the navbar to a fixed position */
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #162938;
+    color: #fff;
+    z-index: 9999;
+}
+  
+
+.nav-links button {
+    color: #fff;
+    border: none;
+    outline:none;
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+  
+.menu {
+    display: flex;
+    gap: 1em;
+    font-size: 18px;
+}
+  
+.menu li {
+    padding: 5px 14px;
+}
+
+
+input[type=checkbox] {
+    display: none;
+  } 
+  
+
+.hamburger {
+    display: none;
+    font-size: 24px;
+    user-select: none;
+}
+
+.btnLogout{
+    background: #162938;
+    color: #fff;
+    outline: none;
+    border:none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.therapy {
+    position: relative;
+    width: 100%;
+    max-width:800px;
+    height:auto;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+    height: auto;
+    padding-left: 117.375px;
+    padding-right: 117.375px;
+}
+
+.therapy-group {
+  position: relative;
+    width: 100%;
+    height: 80px;
+    border-bottom: 2px solid #162938;
+    display:flex;
+    padding-top: 10px;
+}
+
+.therapy-group label:first-child{
+  position: absolute;
+  left: 5px;
+  font-size: 1em;
+  color:#162938;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.therapy-group input[type="radio"]{
+  margin-right: 0px;
+  cursor: pointer;
+}
+
+.therapy-radio{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 5px;
+  padding-top: 30px;
+  padding-bottom: 5px;
+}
+
+.container{
+    position: relative;
+    width: 100%;
+    max-width:800px;
+    height:auto;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 60px;
+}
+
+.container .form{
+    height: 520px;
+    width: 100%;
+    padding:40px;
+}
+
+.form-group{
+    position: relative;
+    width: 100%;
+    height: 80px;
+    border-bottom: 2px solid #162938;
+    display:flex;
+    padding-top: 10px;
+}
+
+.form-group label:first-child{
+    position: absolute;
+    left: 5px;
+    font-size: 1em;
+    color:#162938;
+    font-weight: 600;
+    pointer-events: none;
+}
+
+.form-group input[type="radio"]{
+    margin-right: 0px;
+    cursor: pointer;
+}
+
+.form-radio{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 5px;
+    padding-top: 30px;
+    padding-bottom: 5px;
+}
+
+.btn.btn-primary{
+    width:50%;
+    height:45px;
+    background: #162938;
+    border:none;
+    outline: none;
+    border-radius: 6px;
+    cursor:pointer;
+    font-size: 1em;
+    color:#fff;
+    font-weight: 500;
+    margin-top: 30px;
+}
+
+.btn.btn-primary:hover{
+    opacity: 80%;
+    transition:  .40s;
+}
+
+  @media (max-width: 768px) {
+    .menu {
+        display:none;
+        position: absolute;
+        background-color:#162938;
+        right: 0;
+        left: 0;
+        text-align: center;
+        padding: 16px 0;
+      }
+    
+      .menu li:hover {
+        display: inline-block;
+        background-color:#162938;
+        transition: 0.3s ease;
+      }
+    
+      .menu li + li {
+        margin-top: 12px;
+      }
+    
+      input[type=checkbox]:checked ~ .menu {
+        display: block;
+      }
+    
+      .hamburger {
+        display: block;
+        cursor: pointer;
+      }
+  
+      .container {
+          height: auto; 
+          width: 100%;
+        }
+
+      .therapy {
+        height: auto; 
+        width: 100%;
+      }
+      
+      .container .form {
+          height: auto; 
+      }
+
+      .form-group {
+        height: auto;
+        width: 300px;
+      }
+
+      .therapy-group {
+        height: auto;
+        width: 300px;
+      }
+
+      .form-radio,
+      .therapy-radio {
+        display: grid;
+        width: 300px;
+        grid-template-columns: 1fr 5fr; 
+        gap: 10px;
+      }
+
+      .form-radio input[type="radio"] {
+        display: flex;
+        align-items: center;
+      }
+    
+      .form-radio label {
+        display: block;
+        line-height: 1.5;
+      }
+
+
+  }
+  
